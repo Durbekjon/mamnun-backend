@@ -41,7 +41,7 @@ export class QuoteRequestRepository {
     const [edu, travel, quoteRequests] = await Promise.all([
       this.countQuoteType(QuoteType.EDU),
       this.countQuoteType(QuoteType.TRAVEL),
-      this.prismaService.quoteRequest.findMany(),
+      this.prismaService.quoteRequest.findMany({ include: { service: true } }),
     ]);
 
     return {
@@ -56,7 +56,6 @@ export class QuoteRequestRepository {
       where: { quoteType: quoteType },
     });
   }
-
 
   async findOne(id: number): Promise<QuoteRequest> {
     return this.prismaService.quoteRequest.findUnique({
